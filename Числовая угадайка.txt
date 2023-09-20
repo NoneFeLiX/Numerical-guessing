@@ -1,0 +1,63 @@
+from tkinter import *
+from tkinter import ttk
+import tkinter as tk
+from tkinter.messagebox import showinfo
+import fileinput
+from tkinter import messagebox
+from tkinter.filedialog import *
+from tkinter.messagebox import *
+from random import randint
+
+root = Tk()
+
+root.title('Числовая угадайка')
+root.resizable(False, False)
+root.geometry('500x300')
+
+welcome = Label(text='Добро пожаловать в числовую угадайку!\n', font='50')
+welcome.pack()
+
+enter_num = Label(text='Я загадал число от 1 до 100, отгадай и введи его ниже:\n', font='20')
+enter_num.pack()
+
+
+def getNumEnter():  # функция проверки введённых данных
+    num = numEnter_field.get()
+    if num.isdigit() and 0 < int(num) < 100:
+        return int(num)
+    else:
+        result.config(text='Что-то вы ввели не то, нужно целое число от 1 до 100!')
+
+
+numEnter_field = Entry(root, font='50', justify=CENTER)
+numEnter_field.pack()
+
+result = Label(root, font='50', justify=CENTER, fg='red')
+result.pack()
+
+
+def game():
+    rand_num = randint(1, 100)
+    try_count = 1
+    num = getNumEnter()
+    while num != rand_num:
+        if num < rand_num:
+            result.config(text='Загаданное число больше, попробуйте ещё разок')
+            numEnter_field.delete(0, END)
+            num = numEnter_field.get()
+            try_count += 1
+        if int(num) > rand_num:
+            result.config(text='Загаданное число меньше, попробуйте ещё разок')
+            numEnter_field.delete(0, END)
+            num = numEnter_field.get()
+            try_count += 1
+        if int(num) == rand_num:
+            result.config(text=f'Вы угадали, поздравляем! Количество ваших попыток: {try_count}')
+            break
+
+
+btnRead = Button(root, height=1, width=10, text="Угадать", command=game)
+btnRead.pack()
+
+
+root.mainloop()
